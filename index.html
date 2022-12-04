@@ -173,7 +173,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-12-04 10:26:20 / Modified: 13:44:49" itemprop="dateCreated datePublished" datetime="2022-12-04T10:26:20+08:00">2022-12-04</time>
+              <time title="Created: 2022-12-04 10:26:20 / Modified: 13:46:20" itemprop="dateCreated datePublished" datetime="2022-12-04T10:26:20+08:00">2022-12-04</time>
             </span>
 
           
@@ -197,10 +197,8 @@
 <p>以 <code>GET /api/demo/hello</code> 為例，從下圖二，可以看出來被判斷成「不是 simple request」的原因之一是有多送自定義的 headers <code>x-custom-header</code> 和 <code>x-requested-with</code> (很難符合 simple request 的條件吧XD)，所以就會走 CORS 機制</p>
 <p>從 chrome dev tool &gt; network 看實際運作流程</p>
 <ol>
-<li><p>發出 <code>OPTION /api/demo/hello </code> (initiator 欄位會標示 <code>Preflight</code>)</p>
-</li>
-<li><p>發出 <code>GET /api/demo/hello</code></p>
-</li>
+<li>發出 <code>OPTION /api/demo/hello </code> (initiator 欄位會標示 <code>Preflight</code>)</li>
+<li>發出 <code>GET /api/demo/hello</code></li>
 </ol>
 <p><img src="/images/CORS-ok.png" alt="image-20221204103922755"></p>
 <p><img src="/images/CORS-requests.png" alt="CORS-requests"></p>
@@ -238,14 +236,12 @@
 
 <p>有兩種方式可以確認到底是不是 CORS</p>
 <h2 id="方法一：用瀏覽器的-dev-tool-查看-requests"><a href="#方法一：用瀏覽器的-dev-tool-查看-requests" class="headerlink" title="方法一：用瀏覽器的 dev tool 查看 requests"></a>方法一：用瀏覽器的 dev tool 查看 requests</h2><ol>
-<li><p>先看 target api 的 preflight request 狀態是什麼（Initiator 欄位會是 <code>Preflight</code>）（如果是使用 chrome 請記得選擇 <code>All</code> 而非 <code>Fetch/XHR</code>，不然會看不到 preflight request）</p>
-<ul>
+<li>先看 target api 的 preflight request 狀態是什麼（Initiator 欄位會是 <code>Preflight</code>）（如果是使用 chrome 請記得選擇 <code>All</code> 而非 <code>Fetch/XHR</code>，不然會看不到 preflight request）<ul>
 <li>status &#x3D; 204，表示 target api 的錯誤，不會影響到 CORS 運作，繼續第二步</li>
 <li>status !&#x3D; 204，整個 application 運作應該是有問題的，先停下來，查看 log 排除問題</li>
 </ul>
 </li>
-<li><p>target api 的 response status 是什麼</p>
-<ul>
+<li>target api 的 response status 是什麼<ul>
 <li>status &#x3D; 500，表示 api 有非預期的錯誤，查看 log 排除問題。經驗談：先確保你的環境資料庫帳密設定是否正確（剛開始最常遇到的），再去找排除 API 其他問題</li>
 <li>status &#x3D; CORS error，CORS 應該是真的了，請找後端把相關設定調整好 （Laravel config <code>config/cors.php</code>）</li>
 </ul>
