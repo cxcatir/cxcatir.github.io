@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://cxcktwoepg.github.io/images/CORS-error.png">
 <meta property="og:image" content="https://cxcktwoepg.github.io/images/CORS-laravel-db-error.png">
 <meta property="article:published_time" content="2022-12-04T02:26:20.000Z">
-<meta property="article:modified_time" content="2022-12-04T04:59:32.933Z">
+<meta property="article:modified_time" content="2022-12-04T05:02:51.628Z">
 <meta property="article:author" content="Rita">
 <meta property="article:tag" content="CORS">
 <meta property="article:tag" content="Laravel">
@@ -182,7 +182,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-12-04 10:26:20 / Modified: 12:59:32" itemprop="dateCreated datePublished" datetime="2022-12-04T10:26:20+08:00">2022-12-04</time>
+              <time title="Created: 2022-12-04 10:26:20 / Modified: 13:02:51" itemprop="dateCreated datePublished" datetime="2022-12-04T10:26:20+08:00">2022-12-04</time>
             </span>
 
           
@@ -236,16 +236,19 @@
 <p>有兩種方式可以確認到底是不是 CORS</p>
 <h2 id="方法一：用瀏覽器的-dev-tool-查看-requests"><a href="#方法一：用瀏覽器的-dev-tool-查看-requests" class="headerlink" title="方法一：用瀏覽器的 dev tool 查看 requests"></a>方法一：用瀏覽器的 dev tool 查看 requests</h2><ol>
 <li><p>先看 target api 的 preflight request 狀態是什麼（Initiator 欄位會是 <code>Preflight</code>）（如果是使用 chrome 請記得選擇 <code>All</code> 而非 <code>Fetch/XHR</code>，不然會看不到 preflight request）</p>
-<p>a. status &#x3D; 204，表示 target api 的錯誤，不會影響到 CORS 運作，繼續第二步</p>
-<p>b. status !&#x3D; 204，整個 application 運作應該是有問題的，先停下來，查看 log 排除問題</p>
+<ul>
+<li>status &#x3D; 204，表示 target api 的錯誤，不會影響到 CORS 運作，繼續第二步</li>
+<li>status !&#x3D; 204，整個 application 運作應該是有問題的，先停下來，查看 log 排除問題</li>
+</ul>
 </li>
 <li><p>target api 的 response status 是什麼</p>
+<ul>
+<li>status &#x3D; 500，表示 api 有非預期的錯誤，查看 log 排除問題。經驗談：先確保你的環境資料庫帳密設定是否正確（剛開始最常遇到的），再去找排除 API 其他問題</li>
+<li>status &#x3D; CORS error，CORS 應該是真的了，請找後端把相關設定調整好 （Laravel config <code>config/cors.php</code>）</li>
+</ul>
 </li>
 </ol>
-<p>​		a. status &#x3D; 500，表示 api 有非預期的錯誤，查看 log 排除問題。<br>​		    經驗談：先確保你的環境資料庫帳密設定是否正確（剛開始最常遇到的），再去找排除 API 其他問題</p>
-<p>​		b. status &#x3D; CORS error，CORS 應該是真的了，請找後端把相關設定調整好 （Laravel config <code>config/cors.php</code>）</p>
-<h3 id="案例一：真的-CORS"><a href="#案例一：真的-CORS" class="headerlink" title="案例一：真的 CORS"></a>案例一：真的 CORS</h3><p>流程會是 1a -&gt; 2b</p>
-<p><img src="/images/CORS-error.png" alt="CORS-error"></p>
+<h3 id="案例一：真的-CORS"><a href="#案例一：真的-CORS" class="headerlink" title="案例一：真的 CORS"></a>案例一：真的 CORS</h3><p><img src="/images/CORS-error.png" alt="CORS-error"></p>
 <h3 id="案例二：後端資料庫連線失敗造成的-CORS"><a href="#案例二：後端資料庫連線失敗造成的-CORS" class="headerlink" title="案例二：後端資料庫連線失敗造成的 CORS"></a>案例二：後端資料庫連線失敗造成的 CORS</h3><p><img src="/images/CORS-laravel-db-error.png" alt="CORS-laravel-db-error"></p>
 <h2 id="方法二：用任何-HTTP-client-打-API"><a href="#方法二：用任何-HTTP-client-打-API" class="headerlink" title="方法二：用任何 HTTP client 打 API"></a>方法二：用任何 HTTP client 打 API</h2><ul>
 <li>最簡單的就是從 network 複製 curl 貼到 terminal 去執行 （<a target="_blank" rel="noopener" href="https://developer.chrome.com/blog/replay-a-network-request-in-curl/">怎麼複製和執行</a>），確認 API 結果是不是你預期的結果。</li>
