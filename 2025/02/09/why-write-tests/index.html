@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue":300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cxcatir.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="回想怎麼開始寫測試呢？ 應該只是公司導入要寫單元測試，然後就開始試著寫，閱讀相關書籍，去上課。過程中，也嚐過測試帶來的好處，尤其在重構和修正 bug 時，它能快速給 feedback，讓我知道是否改壞了什麼？確保修正結果是否正確？另一方面，我非常不喜歡手動測試XD，如果可以寫好一份測試程式碼去執行，未來也可以繼續使用，那不是很好嗎？ 自動化測試的意義自動化測試是 code base 的保護傘，任何">
+<meta property="og:type" content="article">
+<meta property="og:title" content="為什麼要寫測試？">
+<meta property="og:url" content="https://cxcatir.github.io/2025/02/09/why-write-tests/index.html">
+<meta property="og:site_name" content="麋途">
+<meta property="og:description" content="回想怎麼開始寫測試呢？ 應該只是公司導入要寫單元測試，然後就開始試著寫，閱讀相關書籍，去上課。過程中，也嚐過測試帶來的好處，尤其在重構和修正 bug 時，它能快速給 feedback，讓我知道是否改壞了什麼？確保修正結果是否正確？另一方面，我非常不喜歡手動測試XD，如果可以寫好一份測試程式碼去執行，未來也可以繼續使用，那不是很好嗎？ 自動化測試的意義自動化測試是 code base 的保護傘，任何">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-02-09T07:31:26.000Z">
+<meta property="article:modified_time" content="2025-02-09T07:35:10.092Z">
+<meta property="article:author" content="Rita">
+<meta property="article:tag" content="Test">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://cxcatir.github.io/2025/02/09/why-write-tests/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>為什麼要寫測試？ | 麋途</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">麋途</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">書寫梳理與反思，也留下一點紀錄可查閱</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://cxcatir.github.io/2025/02/09/why-write-tests/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rita">
+      <meta itemprop="description" content="走過的路會成為養分">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="麋途">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          為什麼要寫測試？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-02-09 15:31:26 / Modified: 15:35:10" itemprop="dateCreated datePublished" datetime="2025-02-09T15:31:26+08:00">2025-02-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>回想怎麼開始寫測試呢？ 應該只是公司導入要寫單元測試，然後就開始試著寫，閱讀相關書籍，去上課。過程中，也嚐過測試帶來的好處，尤其在重構和修正 bug 時，它能快速給 feedback，讓我知道是否改壞了什麼？確保修正結果是否正確？另一方面，我非常不喜歡手動測試XD，如果可以寫好一份測試程式碼去執行，未來也可以繼續使用，那不是很好嗎？</p>
+<h1 id="自動化測試的意義"><a href="#自動化測試的意義" class="headerlink" title="自動化測試的意義"></a>自動化測試的意義</h1><p>自動化測試是 code base 的保護傘，任何人都可執行，不管跑幾次，結果都相同。測試通過，代表開發或修正的功能，如我們預期般運行；測試失敗，代表有東西有問題需要被修正。</p>
+<p>甚至在《單元測試的藝術》書中，寫說能做到縮短整體開發週期。</p>
+<h1 id="測試看起來這麼美好，沒有什麼問題存在嗎？"><a href="#測試看起來這麼美好，沒有什麼問題存在嗎？" class="headerlink" title="測試看起來這麼美好，沒有什麼問題存在嗎？"></a>測試看起來這麼美好，沒有什麼問題存在嗎？</h1><p>實際要達到這看起來很美好的願景，還有一些挑戰存在，從好的測試作為切入點</p>
+<p>好的測試，除了測試結果可被信任外，也要好維護、具有良好可讀性。</p>
+<p>不好維護、可讀性不佳、測試範圍太龐大的測試，後續接手修正或調整需求的工程師超痛苦，光是讀懂就需要花很多時間，再去調整新的結果也累。最後就覺得為什麼要花時間改測試？手動測試還比較快。</p>
+<p>如何寫好出的測試，是一個需要不斷學習、練習、思考和經驗歸納，迭代出一些經驗法則，並且熟練整個過程。很常是一個需要組合技的情境，例如：設計測試案例的測試範圍應該劃在哪？會不會過度指定？而決定測試範圍可能也會跟 class design、職責定義有關係。</p>
+<p>寫一個測試很簡單，進入門檻低，尤其在有 AI 的時代更加容易，但是寫了之後長時間的維護與使用，才是考驗的開始。</p>
+<p>能不能縮短開發週期，我想有一半是是取決於團隊的夥伴是否逐漸能寫出好的測試，或是說，逐漸迭代出好的測試，並且熟練。</p>
+<h1 id="自動化測試不會和-QA-工作重疊嗎？"><a href="#自動化測試不會和-QA-工作重疊嗎？" class="headerlink" title="自動化測試不會和 QA 工作重疊嗎？"></a>自動化測試不會和 QA 工作重疊嗎？</h1><p>先說結論，我認為確保的面向和範圍是不同的，兩者相輔相成。</p>
+<p>工程師所撰寫的自動化測試，是對單一功能做測試，也會根據 class 職責去做顆粒度更小的測試，來確保寫出來的 code base，符合我們了解到的商業邏輯，外部不可控的元件都會轉成可控。</p>
+<p>QA 測試，是一種黑箱測試，無法準確定位是哪邊出現問題，能獲得的結果會是相關測資、測試情境，實際結果。要再交由工程師去定位問題在哪。</p>
+<p>當 QA 回報問題，我們會在自己的環境先重現問題，推測大約出問題的地方，再去新增或修改對應的測試案例重現它，就能動手修正了。那自動化測試就會涵蓋到這次遇到的問題，並且確保已經處理。</p>
+<h1 id="測試種類"><a href="#測試種類" class="headerlink" title="測試種類"></a>測試種類</h1><table>
+<thead>
+<tr>
+<th></th>
+<th>單元測試<br>Unit Test</th>
+<th>整合測試<br>Integration Test</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>執行速度</td>
+<td>快</td>
+<td>不一定</td>
+</tr>
+<tr>
+<td>測試範圍</td>
+<td>工作單元</td>
+<td>工作單元或 API</td>
+</tr>
+<tr>
+<td>測試對象是否會摸到資料庫、檔案系統</td>
+<td>不可</td>
+<td>可</td>
+</tr>
+</tbody></table>
+<p>不管是哪一種，測試都應擁有測試對象的所有控制權，常見的像是第三方 API 或是套件。</p>
+<p>測試範圍，這部份並沒有一個統一的標準，在《單元測試的藝術》的定義是：</p>
+<blockquote>
+<p>一個單元測試是一段程式碼呼叫一個工作單元，並驗證工作單元的一個具體最終結果。如果對這個最終結果的假設是錯誤的，那單元測試就失敗了。一個單元測試的範圍，可以小到一個方法，大到多個類別</p>
+</blockquote>
+<p>簡單劃分兩種測試的話，你想要的寫的測試是否有摸到資料庫、檔案系統？如果有，那就是整合測試。這樣是不是太粗暴了呢？對XD</p>
+<p>但只靠這個簡單的判斷，就能決定當下要撰寫測試種類，沒有問題嗎？</p>
+<p>有的，這會牽涉到測試案例的設計以及 class design，例如：class method 有個摸 DB 的功能，包含複雜的商業邏輯判斷，如果使用上面的判斷，我們會決定寫 Integration Test，但有沒有可能它是可以做成 Integration Test + Unit Test 呢？商業邏輯根據意圖將它拆到獨立的 class，那這邊就能寫 Unit Test；原本的 class method 也許就能根據商業邏輯產生不同 DB 結果對應的 Integration Test，這也能表示有使用到拆出來處理商業邏輯的 class，而不需要針對所有商業邏輯的情況。</p>
+<h1 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h1><p>想要達到測試的美好，測試要寫的好，水還很深，寫越久越感覺自己的不足。希望透過寫文章梳理一下相關知識，並且持續學習與調整。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Test/" rel="tag"># Test</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/28/how-lighthouse-php-allows-directives-to-be-executed-in-graphql-php/" rel="prev" title="lighthouse php 如何讓 directive 在 graphql-php 流程中一起執行">
+      <i class="fa fa-chevron-left"></i> lighthouse php 如何讓 directive 在 graphql-php 流程中一起執行
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+  <script src="https://utteranc.es/client.js"
+          repo="cxcatir/cxcatir.github.io"
+          issue-term="pathname"
+          label="comments"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%8B%95%E5%8C%96%E6%B8%AC%E8%A9%A6%E7%9A%84%E6%84%8F%E7%BE%A9"><span class="nav-number">1.</span> <span class="nav-text">自動化測試的意義</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6%E7%9C%8B%E8%B5%B7%E4%BE%86%E9%80%99%E9%BA%BC%E7%BE%8E%E5%A5%BD%EF%BC%8C%E6%B2%92%E6%9C%89%E4%BB%80%E9%BA%BC%E5%95%8F%E9%A1%8C%E5%AD%98%E5%9C%A8%E5%97%8E%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">測試看起來這麼美好，沒有什麼問題存在嗎？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%8B%95%E5%8C%96%E6%B8%AC%E8%A9%A6%E4%B8%8D%E6%9C%83%E5%92%8C-QA-%E5%B7%A5%E4%BD%9C%E9%87%8D%E7%96%8A%E5%97%8E%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">自動化測試不會和 QA 工作重疊嗎？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6%E7%A8%AE%E9%A1%9E"><span class="nav-number">4.</span> <span class="nav-text">測試種類</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">5.</span> <span class="nav-text">結論</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rita</p>
+  <div class="site-description" itemprop="description">走過的路會成為養分</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-star-and-crescent"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rita</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

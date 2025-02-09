@@ -17,20 +17,20 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"cxcktwoepg.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"cxcatir.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="讓當下能夠專注在可以做些什麼和紀錄">
+  <meta name="description" content="走過的路會成為養分">
 <meta property="og:type" content="website">
 <meta property="og:title" content="麋途">
-<meta property="og:url" content="https://cxcktwoepg.github.io/index.html">
+<meta property="og:url" content="https://cxcatir.github.io/index.html">
 <meta property="og:site_name" content="麋途">
-<meta property="og:description" content="讓當下能夠專注在可以做些什麼和紀錄">
+<meta property="og:description" content="走過的路會成為養分">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="Rita">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://cxcktwoepg.github.io/">
+<link rel="canonical" href="https://cxcatir.github.io/">
 
 
 <script id="page-configurations">
@@ -97,7 +97,7 @@
       <h1 class="site-title">麋途</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">藉由紀錄給迷途的未來有能量繼續前行</p>
+      <p class="site-subtitle" itemprop="description">書寫梳理與反思，也留下一點紀錄可查閱</p>
   </div>
 
   <div class="site-nav-right">
@@ -148,12 +148,83 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://cxcktwoepg.github.io/2023/08/28/how-lighthouse-php-allows-directives-to-be-executed-in-graphql-php/">
+    <link itemprop="mainEntityOfPage" href="https://cxcatir.github.io/2025/02/09/why-write-tests/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rita">
-      <meta itemprop="description" content="讓當下能夠專注在可以做些什麼和紀錄">
+      <meta itemprop="description" content="走過的路會成為養分">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="麋途">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/02/09/why-write-tests/" class="post-title-link" itemprop="url">為什麼要寫測試？</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-02-09 15:31:26 / Modified: 15:35:10" itemprop="dateCreated datePublished" datetime="2025-02-09T15:31:26+08:00">2025-02-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>回想怎麼開始寫測試呢？ 應該只是公司導入要寫單元測試，然後就開始試著寫，閱讀相關書籍，去上課。過程中，也嚐過測試帶來的好處，尤其在重構和修正 bug 時，它能快速給 feedback，讓我知道是否改壞了什麼？確保修正結果是否正確？另一方面，我非常不喜歡手動測試XD，如果可以寫好一份測試程式碼去執行，未來也可以繼續使用，那不是很好嗎？</p>
+<h1 id="自動化測試的意義"><a href="#自動化測試的意義" class="headerlink" title="自動化測試的意義"></a>自動化測試的意義</h1><p>自動化測試是 code base 的保護傘，任何人都可執行，不管跑幾次，結果都相同。測試通過，代表開發或修正的功能，如我們預期般運行；測試失敗，代表有東西有問題需要被修正。</p>
+<p>甚至在《單元測試的藝術》書中，寫說能做到縮短整體開發週期。</p>
+<h1 id="測試看起來這麼美好，沒有什麼問題存在嗎？"><a href="#測試看起來這麼美好，沒有什麼問題存在嗎？" class="headerlink" title="測試看起來這麼美好，沒有什麼問題存在嗎？"></a>測試看起來這麼美好，沒有什麼問題存在嗎？</h1><p>實際要達到這看起來很美好的願景，還有一些挑戰存在，從好的測試作為切入點</p>
+<p>好的測試，除了測試結果可被信任外，也要好維護、具有良好可讀性。</p>
+<p>不好維護、可讀性不佳、測試範圍太龐大的測試，後續接手修正或調整需求的工程師超痛苦，光是讀懂就需要花很多時間，再去調整新的結果也累。最後就覺得為什麼要花時間改測試？手動測試還比較快。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/02/09/why-write-tests/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://cxcatir.github.io/2023/08/28/how-lighthouse-php-allows-directives-to-be-executed-in-graphql-php/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rita">
+      <meta itemprop="description" content="走過的路會成為養分">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -223,12 +294,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://cxcktwoepg.github.io/2023/08/20/guzzle-fulfilled-and-rejected-definition/">
+    <link itemprop="mainEntityOfPage" href="https://cxcatir.github.io/2023/08/20/guzzle-fulfilled-and-rejected-definition/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rita">
-      <meta itemprop="description" content="讓當下能夠專注在可以做些什麼和紀錄">
+      <meta itemprop="description" content="走過的路會成為養分">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -309,12 +380,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://cxcktwoepg.github.io/2023/01/29/laravel-resolve-dependency-manually/">
+    <link itemprop="mainEntityOfPage" href="https://cxcatir.github.io/2023/01/29/laravel-resolve-dependency-manually/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rita">
-      <meta itemprop="description" content="讓當下能夠專注在可以做些什麼和紀錄">
+      <meta itemprop="description" content="走過的路會成為養分">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -389,12 +460,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://cxcktwoepg.github.io/2022/12/04/CORS-and-Laravel/">
+    <link itemprop="mainEntityOfPage" href="https://cxcatir.github.io/2022/12/04/CORS-and-Laravel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rita">
-      <meta itemprop="description" content="讓當下能夠專注在可以做些什麼和紀錄">
+      <meta itemprop="description" content="走過的路會成為養分">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -524,19 +595,19 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Rita</p>
-  <div class="site-description" itemprop="description">讓當下能夠專注在可以做些什麼和紀錄</div>
+  <div class="site-description" itemprop="description">走過的路會成為養分</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
@@ -563,7 +634,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-star-and-crescent"></i>
   </span>
