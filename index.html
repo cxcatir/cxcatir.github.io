@@ -153,6 +153,157 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://cxcatir.github.io/2025/02/15/c-sharp-moq-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rita">
+      <meta itemprop="description" content="走過的路會成為養分">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="麋途">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/02/15/c-sharp-moq-usage/" class="post-title-link" itemprop="url">C# moq 使用說明</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-02-15 14:40:00 / Modified: 14:52:06" itemprop="dateCreated datePublished" datetime="2025-02-15T14:40:00+08:00">2025-02-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>package: <a target="_blank" rel="noopener" href="https://github.com/devlooped/moq">moq</a></p>
+<h1 id="可被-Mock-的對象"><a href="#可被-Mock-的對象" class="headerlink" title="可被 Mock 的對象"></a>可被 Mock 的對象</h1><p>必須是可被 Override</p>
+<ul>
+<li>Interface：method, property</li>
+<li>Class：<strong>virtual</strong> method, property</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Moq;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IFoo</span></span><br><span class="line">&#123;</span><br><span class="line">    Bar Bar &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="built_in">int</span> Value &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="function"><span class="built_in">bool</span> <span class="title">DoSomething</span>(<span class="params"><span class="built_in">string</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Bar</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 可被 Mock</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="comment">// 不可被 Mock</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Submit</span>()</span> &#123; <span class="keyword">return</span> <span class="literal">false</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="設置回傳值"><a href="#設置回傳值" class="headerlink" title="設置回傳值"></a>設置回傳值</h1><p>被控制的 method 是 sync 或 async，呼叫 mock 的 method 不同</p>
+<h2 id="sync"><a href="#sync" class="headerlink" title="sync"></a>sync</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/02/15/c-sharp-moq-usage/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://cxcatir.github.io/2025/02/15/stub-and-mock/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rita">
+      <meta itemprop="description" content="走過的路會成為養分">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="麋途">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/02/15/stub-and-mock/" class="post-title-link" itemprop="url">Stub & Mock 差異與使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-02-15 14:40:00 / Modified: 14:51:39" itemprop="dateCreated datePublished" datetime="2025-02-15T14:40:00+08:00">2025-02-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>這邊說的 Stub 與 Mock 是屬於概念層面，非各語言對應 package 的 class，不管是 Stub 與 Mock 它們都是要完全控制測試對象中使用的 class，意圖將不可控轉為可控。</p>
+<h1 id="Stub"><a href="#Stub" class="headerlink" title="Stub"></a>Stub</h1><ul>
+<li>行為：控制 class，讓它回傳預期中的結果</li>
+<li>目的：讓測試順利執行，因此測試案例的重點不會在被 stub 的 class</li>
+</ul>
+<h1 id="Mock"><a href="#Mock" class="headerlink" title="Mock"></a>Mock</h1><ul>
+<li>行為：控制 class，對它驗證傳入參數、呼叫次數</li>
+<li>目的：驗證項目，驗證測試對象是否有與被 Mock 的 class 正確互動</li>
+</ul>
+<h1 id="以-C-moq-為範例"><a href="#以-C-moq-為範例" class="headerlink" title="以 C# moq 為範例"></a>以 C# moq 為範例</h1><p>這邊分別對 Stub 與 Mock 做範例說明，使用 xunit test framework，moq 常見的使用請看 <a href="/2025/02/15/c-sharp-moq-usage/" title="C# moq 使用說明">C# moq 使用說明</a></p>
+<p>小警示：在以下程式碼看到 Mock，程式碼的 Mock 並不是等於概念層面的定義，只是 moq package 自身的 class，package 定義的 Mock class，做到 Stub 與 Mock 兩種目的使用。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/02/15/stub-and-mock/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://cxcatir.github.io/2025/02/09/why-write-tests/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -607,7 +758,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

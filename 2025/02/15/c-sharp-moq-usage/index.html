@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue":300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cxcatir.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="package: moq 可被 Mock 的對象必須是可被 Override  Interface：method, property Class：virtual method, property  12345678910111213141516using Moq;public interface IFoo&amp;#123;    Bar Bar &amp;#123; get; set; &amp;#125;    in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C# moq 使用說明">
+<meta property="og:url" content="https://cxcatir.github.io/2025/02/15/c-sharp-moq-usage/index.html">
+<meta property="og:site_name" content="麋途">
+<meta property="og:description" content="package: moq 可被 Mock 的對象必須是可被 Override  Interface：method, property Class：virtual method, property  12345678910111213141516using Moq;public interface IFoo&amp;#123;    Bar Bar &amp;#123; get; set; &amp;#125;    in">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-02-15T06:40:00.000Z">
+<meta property="article:modified_time" content="2025-02-15T06:52:06.618Z">
+<meta property="article:author" content="Rita">
+<meta property="article:tag" content="Test">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://cxcatir.github.io/2025/02/15/c-sharp-moq-usage/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>C# moq 使用說明 | 麋途</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">麋途</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">書寫梳理與反思，也留下一點紀錄可查閱</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://cxcatir.github.io/2025/02/15/c-sharp-moq-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rita">
+      <meta itemprop="description" content="走過的路會成為養分">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="麋途">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C# moq 使用說明
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-02-15 14:40:00 / Modified: 14:52:06" itemprop="dateCreated datePublished" datetime="2025-02-15T14:40:00+08:00">2025-02-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>package: <a target="_blank" rel="noopener" href="https://github.com/devlooped/moq">moq</a></p>
+<h1 id="可被-Mock-的對象"><a href="#可被-Mock-的對象" class="headerlink" title="可被 Mock 的對象"></a>可被 Mock 的對象</h1><p>必須是可被 Override</p>
+<ul>
+<li>Interface：method, property</li>
+<li>Class：<strong>virtual</strong> method, property</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Moq;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IFoo</span></span><br><span class="line">&#123;</span><br><span class="line">    Bar Bar &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="built_in">int</span> Value &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="function"><span class="built_in">bool</span> <span class="title">DoSomething</span>(<span class="params"><span class="built_in">string</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Bar</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 可被 Mock</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="comment">// 不可被 Mock</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Submit</span>()</span> &#123; <span class="keyword">return</span> <span class="literal">false</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="設置回傳值"><a href="#設置回傳值" class="headerlink" title="設置回傳值"></a>設置回傳值</h1><p>被控制的 method 是 sync 或 async，呼叫 mock 的 method 不同</p>
+<h2 id="sync"><a href="#sync" class="headerlink" title="sync"></a>sync</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mock = <span class="keyword">new</span> Mock&lt;IFoo&gt;();</span><br><span class="line">mock.Setup(foo =&gt; foo.DoSomething()).Returns(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="async"><a href="#async" class="headerlink" title="async"></a>async</h2><p>使用哪種應該無好壞之分，如果要選擇的話，我會偏向方法二，直覺好懂</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mock = <span class="keyword">new</span> Mock&lt;IFoo&gt;();</span><br><span class="line"><span class="comment">// 方法一：在被控制的 method 呼叫，加上 .Result</span></span><br><span class="line">mock.Setup(foo =&gt; foo.DoSomethingAsync().Result).Returns(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法二：呼叫 mock 的 ReturnsAsync</span></span><br><span class="line">mock.Setup(foo =&gt; foo.DoSomethingAsync()).ReturnsAsync(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法三：在 Returns 參數寫 async lambda</span></span><br><span class="line">mock.Setup(foo =&gt; foo.DoSomethingAsync()).Returns(<span class="keyword">async</span> () =&gt; <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<h1 id="設置-throw-exception"><a href="#設置-throw-exception" class="headerlink" title="設置 throw exception"></a>設置 throw exception</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mock = <span class="keyword">new</span> Mock&lt;IFoo&gt;();</span><br><span class="line"><span class="comment">// exception 沒有參數</span></span><br><span class="line">mock.Setup(foo =&gt; foo.DoSomething(<span class="string">&quot;reset&quot;</span>)).Throws&lt;InvalidOperationException&gt;();</span><br><span class="line"><span class="comment">// exception 有參數</span></span><br><span class="line">mock.Setup(foo =&gt; foo.DoSomething(<span class="string">&quot;abc&quot;</span>)).Throws(<span class="keyword">new</span> ArgumentException(<span class="string">&quot;command&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>除了 exception 有無參數之外，以上的設置也會讓在 DoSomething 參數是不同值時，有不同行為</p>
+<ul>
+<li>參數是 reset，throw InvalidOperationException</li>
+<li>參數是 abc，throw ArgumentException</li>
+</ul>
+<p>接下來詳細說明，被控制 method 參數的影響</p>
+<h1 id="參數"><a href="#參數" class="headerlink" title="參數"></a>參數</h1><p>目的是 Stub 或 Mock 都是要參數符合，才算數，Stub 指定參數，必須符合才會回傳指定值或 exception；Mock 驗證對象指定參數，必須符合，才會繼續驗證呼叫次數。</p>
+<p>以下以目的為 Stub 說明</p>
+<h2 id="任何值"><a href="#任何值" class="headerlink" title="任何值"></a>任何值</h2><ol>
+<li><code>It.IsAny&lt;T&gt;</code></li>
+<li><code>It.Ref&lt;T&gt;.IsAny</code></li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DoSomething 參數是任何字串，回傳 true</span></span><br><span class="line"><span class="comment">// 參數是 string，或其他 object</span></span><br><span class="line">mock.Setup(foo =&gt; foo.DoSomething(It.IsAny&lt;<span class="built_in">string</span>&gt;())).Returns(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 參數是 ref，有不同語法</span></span><br><span class="line">mock.Setup(foo =&gt; foo.Submit(<span class="keyword">ref</span> It.Ref&lt;Bar&gt;.IsAny)).Returns(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="範圍"><a href="#範圍" class="headerlink" title="範圍"></a>範圍</h2><p><code>It.IsInRange&lt;T&gt;(T from, T to, Range rangeKind)</code></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Add 參數是 0~10，回傳 true</span></span><br><span class="line">mock.Setup(foo =&gt; foo.Add(It.IsInRange&lt;<span class="built_in">int</span>&gt;(<span class="number">0</span>, <span class="number">10</span>, Range.Inclusive))).Returns(<span class="literal">true</span>); </span><br></pre></td></tr></table></figure>
+
+<h2 id="Regex"><a href="#Regex" class="headerlink" title="Regex"></a>Regex</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mock.Setup(x =&gt; x.DoSomethingStringy(It.IsRegex(<span class="string">&quot;[a-d]+&quot;</span>, RegexOptions.IgnoreCase))).Returns(<span class="string">&quot;foo&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Func-有邏輯的參數"><a href="#Func-有邏輯的參數" class="headerlink" title="Func 有邏輯的參數"></a>Func 有邏輯的參數</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 只要參數是 2 的倍數，都回傳 true</span></span><br><span class="line">mock.Setup(foo =&gt; foo.Add(It.Is&lt;<span class="built_in">int</span>&gt;(i =&gt; i % <span class="number">2</span> == <span class="number">0</span>))).Returns(<span class="literal">true</span>); </span><br></pre></td></tr></table></figure>
+
+<p>也能用在 Verify 的參數是 object 的情況，驗證完整的 property</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> paymentApiMock = <span class="keyword">new</span> Mock&lt;IThirtyPartyPaymentApi&gt;();</span><br><span class="line">paymentApiMock.Verify(api =&gt; api.Pay(It.Is&lt;PayRequestDto&gt;(dto =&gt;</span><br><span class="line">    dto.RefId == <span class="string">&quot;uuid123&quot;</span></span><br><span class="line">    &amp;&amp; dto.Currency == <span class="string">&quot;TWD&quot;</span></span><br><span class="line">    &amp;&amp; dto.Amount == <span class="number">1000</span></span><br><span class="line">)), Times.Once);</span><br></pre></td></tr></table></figure>
+
+<h1 id="驗證"><a href="#驗證" class="headerlink" title="驗證"></a>驗證</h1><p>最基本的驗證 <code>DoSomething</code> 至少要被呼叫一次，而且參數要是 <code>ping</code></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mock.Verify(foo =&gt; foo.DoSomething(<span class="string">&quot;ping&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="次數"><a href="#次數" class="headerlink" title="次數"></a>次數</h2><p>Verify 第二個參數，指定呼叫次數</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Verify(Expression&lt;Action&lt;T&gt;&gt; expression, Func&lt;Times&gt; times)</span><br></pre></td></tr></table></figure>
+
+<p>範例</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不能被呼叫到</span></span><br><span class="line">mock.Verify(foo =&gt; foo.DoSomething(<span class="string">&quot;ping&quot;</span>), Times.Never());</span><br><span class="line"><span class="comment">// 呼叫次數至少一次</span></span><br><span class="line">mock.Verify(foo =&gt; foo.DoSomething(<span class="string">&quot;ping&quot;</span>), Times.AtLeastOnce());</span><br><span class="line"><span class="comment">// 呼叫次數是範圍 2~3</span></span><br><span class="line">mock.Verify(foo =&gt; foo.DoSomething(<span class="string">&quot;ping&quot;</span>), Times.Between(<span class="number">2</span>, <span class="number">3</span>, Range.Inclusive));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="可驗證的對象"><a href="#可驗證的對象" class="headerlink" title="可驗證的對象"></a>可驗證的對象</h2><ul>
+<li>method<br> <code>mock.Verify(foo =&gt; foo.DoSomething(&quot;ping&quot;));</code></li>
+<li>setter<br> <code>mock.VerifySet(foo =&gt; foo.Name);</code></li>
+<li>getter<br> <code>mock.VerifyGet(foo =&gt; foo.Name);</code></li>
+<li>event accessor</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Test/" rel="tag"># Test</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/02/15/stub-and-mock/" rel="prev" title="Stub & Mock 差異與使用">
+      <i class="fa fa-chevron-left"></i> Stub & Mock 差異與使用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+  <script src="https://utteranc.es/client.js"
+          repo="cxcatir/cxcatir.github.io"
+          issue-term="pathname"
+          label="comments"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AF%E8%A2%AB-Mock-%E7%9A%84%E5%B0%8D%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">可被 Mock 的對象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A8%AD%E7%BD%AE%E5%9B%9E%E5%82%B3%E5%80%BC"><span class="nav-number">2.</span> <span class="nav-text">設置回傳值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sync"><span class="nav-number">2.1.</span> <span class="nav-text">sync</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#async"><span class="nav-number">2.2.</span> <span class="nav-text">async</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A8%AD%E7%BD%AE-throw-exception"><span class="nav-number">3.</span> <span class="nav-text">設置 throw exception</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%83%E6%95%B8"><span class="nav-number">4.</span> <span class="nav-text">參數</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E4%BD%95%E5%80%BC"><span class="nav-number">4.1.</span> <span class="nav-text">任何值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AF%84%E5%9C%8D"><span class="nav-number">4.2.</span> <span class="nav-text">範圍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Regex"><span class="nav-number">4.3.</span> <span class="nav-text">Regex</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Func-%E6%9C%89%E9%82%8F%E8%BC%AF%E7%9A%84%E5%8F%83%E6%95%B8"><span class="nav-number">4.4.</span> <span class="nav-text">Func 有邏輯的參數</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A9%97%E8%AD%89"><span class="nav-number">5.</span> <span class="nav-text">驗證</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A1%E6%95%B8"><span class="nav-number">5.1.</span> <span class="nav-text">次數</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E9%A9%97%E8%AD%89%E7%9A%84%E5%B0%8D%E8%B1%A1"><span class="nav-number">5.2.</span> <span class="nav-text">可驗證的對象</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rita</p>
+  <div class="site-description" itemprop="description">走過的路會成為養分</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-star-and-crescent"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rita</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

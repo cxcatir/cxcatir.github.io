@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue":300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cxcatir.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="這邊說的 Stub 與 Mock 是屬於概念層面，非各語言對應 package 的 class，不管是 Stub 與 Mock 它們都是要完全控制測試對象中使用的 class，意圖將不可控轉為可控。 Stub 行為：控制 class，讓它回傳預期中的結果 目的：讓測試順利執行，因此測試案例的重點不會在被 stub 的 class  Mock 行為：控制 class，對它驗證傳入參數、呼叫次數 目的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stub &amp; Mock 差異與使用">
+<meta property="og:url" content="https://cxcatir.github.io/2025/02/15/stub-and-mock/index.html">
+<meta property="og:site_name" content="麋途">
+<meta property="og:description" content="這邊說的 Stub 與 Mock 是屬於概念層面，非各語言對應 package 的 class，不管是 Stub 與 Mock 它們都是要完全控制測試對象中使用的 class，意圖將不可控轉為可控。 Stub 行為：控制 class，讓它回傳預期中的結果 目的：讓測試順利執行，因此測試案例的重點不會在被 stub 的 class  Mock 行為：控制 class，對它驗證傳入參數、呼叫次數 目的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-02-15T06:40:00.000Z">
+<meta property="article:modified_time" content="2025-02-15T06:51:39.211Z">
+<meta property="article:author" content="Rita">
+<meta property="article:tag" content="Test">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://cxcatir.github.io/2025/02/15/stub-and-mock/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Stub & Mock 差異與使用 | 麋途</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">麋途</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">書寫梳理與反思，也留下一點紀錄可查閱</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://cxcatir.github.io/2025/02/15/stub-and-mock/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rita">
+      <meta itemprop="description" content="走過的路會成為養分">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="麋途">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Stub & Mock 差異與使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-02-15 14:40:00 / Modified: 14:51:39" itemprop="dateCreated datePublished" datetime="2025-02-15T14:40:00+08:00">2025-02-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>這邊說的 Stub 與 Mock 是屬於概念層面，非各語言對應 package 的 class，不管是 Stub 與 Mock 它們都是要完全控制測試對象中使用的 class，意圖將不可控轉為可控。</p>
+<h1 id="Stub"><a href="#Stub" class="headerlink" title="Stub"></a>Stub</h1><ul>
+<li>行為：控制 class，讓它回傳預期中的結果</li>
+<li>目的：讓測試順利執行，因此測試案例的重點不會在被 stub 的 class</li>
+</ul>
+<h1 id="Mock"><a href="#Mock" class="headerlink" title="Mock"></a>Mock</h1><ul>
+<li>行為：控制 class，對它驗證傳入參數、呼叫次數</li>
+<li>目的：驗證項目，驗證測試對象是否有與被 Mock 的 class 正確互動</li>
+</ul>
+<h1 id="以-C-moq-為範例"><a href="#以-C-moq-為範例" class="headerlink" title="以 C# moq 為範例"></a>以 C# moq 為範例</h1><p>這邊分別對 Stub 與 Mock 做範例說明，使用 xunit test framework，moq 常見的使用請看 <a href="/2025/02/15/c-sharp-moq-usage/" title="C# moq 使用說明">C# moq 使用說明</a></p>
+<p>小警示：在以下程式碼看到 Mock，程式碼的 Mock 並不是等於概念層面的定義，只是 moq package 自身的 class，package 定義的 Mock class，做到 Stub 與 Mock 兩種目的使用。</p>
+<h2 id="Stub-1"><a href="#Stub-1" class="headerlink" title="Stub"></a>Stub</h2><ul>
+<li>產生 Mock instance</li>
+<li>呼叫 Setup 設置 method 回傳值，屬於 test case 的 arrange<ul>
+<li>使用說明：設置回傳值</li>
+</ul>
+</li>
+</ul>
+<p>被測試的對象是 <code>PaymentService.UpdatePayResult</code> 職責是呼叫第三方 API 取得付款結果，根據 API response 更新系統的 DB 交易結果。在這個功能中，重要的是對 API response 的處理，並更新 DB 交易結果，對這個測試案例來說，只要 Stub 第三方 API 取得付款結果，再展開成功、失敗案例，驗證交易資料</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">StubExampleTest</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">Fact</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UpdatePayResult_PaySucceeded_ShouldConvertToPaid</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> paymentApiStub = <span class="keyword">new</span> Mock&lt;IThirtyPartyPaymentApi&gt;();      </span><br><span class="line">        paymentApiStub.Setup(api =&gt; api.Query(<span class="string">&quot;uuid123&quot;</span>)).Returns(<span class="keyword">new</span> ThirtyPartyQueryResponseDto</span><br><span class="line">        &#123;</span><br><span class="line">            RefId = <span class="string">&quot;uuid123&quot;</span>,</span><br><span class="line">            ResultCode = <span class="string">&quot;00&quot;</span></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> service = <span class="keyword">new</span> PaymentService(<span class="keyword">new</span> PaymentRepository(), paymentApiStub.Object);</span><br><span class="line">        <span class="keyword">var</span> payment = service.UpdatePayResult(<span class="string">&quot;uuid123&quot;</span>);</span><br><span class="line"></span><br><span class="line">        Assert.Equal(<span class="string">&quot;paid&quot;</span>, payment.Status);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Mock-1"><a href="#Mock-1" class="headerlink" title="Mock"></a>Mock</h2><ul>
+<li>產生 Mock instance</li>
+<li>驗證 method 互動，屬於 test case 的 assertion<ul>
+<li>使用說明 Verify</li>
+</ul>
+</li>
+</ul>
+<p>被測試的對象是 <code>PaymentService.Pay</code> 職責是檢查是否可付款、轉換成第三方 API 可接受的資料，呼叫第三方 API。在這個功能中，可以付款的情況，重要的是有沒有送對的資料給第三方 API，所以使用 Mock 來確保這件事情。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Moq;</span><br><span class="line"><span class="keyword">using</span> TestProject.Payment;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">TestProject</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MockExampleTest</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">Fact</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Pay_PaymentIsInit_ShouldSendRequest</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> paymentApiMock = <span class="keyword">new</span> Mock&lt;IThirtyPartyPaymentApi&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> service = <span class="keyword">new</span> PaymentService(<span class="keyword">new</span> PaymentRepository(), paymentApiMock.Object);</span><br><span class="line">        service.Pay(<span class="string">&quot;uuid123&quot;</span>);</span><br><span class="line"></span><br><span class="line">        paymentApiMock.Verify(api =&gt; api.Pay(It.Is&lt;PayRequestDto&gt;(dto =&gt;</span><br><span class="line">            dto.RefId == <span class="string">&quot;uuid123&quot;</span></span><br><span class="line">            &amp;&amp; dto.Currency == <span class="string">&quot;TWD&quot;</span></span><br><span class="line">            &amp;&amp; dto.Amount == <span class="number">1000</span></span><br><span class="line">        )), Times.Once);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="共同被測試的對象-PaymentService"><a href="#共同被測試的對象-PaymentService" class="headerlink" title="共同被測試的對象 PaymentService"></a>共同被測試的對象 PaymentService</h2><p>以下 Repository 的部份 hard code 簡單示意</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">TestProject.Payment</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PaymentService</span>(<span class="params">PaymentRepository paymentRepository, IThirtyPartyPaymentApi paymentApi</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Pay</span>(<span class="params"><span class="built_in">string</span> paymentId</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> payment = paymentRepository.FindPayment(paymentId);</span><br><span class="line">        <span class="keyword">if</span> (payment.Status == <span class="string">&quot;init&quot;</span>) paymentApi.Pay(BuildPayRequestDto(payment));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> PayRequestDto <span class="title">BuildPayRequestDto</span>(<span class="params">Payment payment</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PayRequestDto</span><br><span class="line">        &#123;</span><br><span class="line">            RefId = payment.Id,</span><br><span class="line">            Currency = payment.Currency,</span><br><span class="line">            Amount = payment.Amount</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Payment <span class="title">UpdatePayResult</span>(<span class="params"><span class="built_in">string</span> paymentId</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> payment = paymentRepository.FindPayment(paymentId);</span><br><span class="line">        <span class="keyword">var</span> payResult = paymentApi.Query(paymentId);</span><br><span class="line">        <span class="keyword">return</span> payResult.IsSuccess()</span><br><span class="line">            ? paymentRepository.ChangeToPaid(payment)</span><br><span class="line">            : paymentRepository.ChangeToFailed(payment);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IThirtyPartyPaymentApi</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ThirtyPartyQueryResponseDto <span class="title">Query</span>(<span class="params"><span class="built_in">string</span> paymentId</span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Pay</span>(<span class="params">PayRequestDto payRequestDto</span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ThirtyPartyQueryResponseDto</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> RefId &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> ResultCode &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">IsSuccess</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> ResultCode == <span class="string">&quot;00&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PayRequestDto</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> RefId &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Currency &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">decimal</span> Amount &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PaymentRepository</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Payment <span class="title">FindPayment</span>(<span class="params"><span class="built_in">string</span> paymentId</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Payment &#123; Id = paymentId, Status = <span class="string">&quot;init&quot;</span>, Currency = <span class="string">&quot;TWD&quot;</span>, Amount = <span class="number">1000</span> &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Payment <span class="title">ChangeToPaid</span>(<span class="params">Payment payment</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        payment.Status = <span class="string">&quot;paid&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> payment;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Payment <span class="title">ChangeToFailed</span>(<span class="params">Payment payment</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        payment.Status = <span class="string">&quot;failed&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> payment;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Payment</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Status &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Currency &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">decimal</span> Amount &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Test/" rel="tag"># Test</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/02/09/why-write-tests/" rel="prev" title="為什麼要寫測試？">
+      <i class="fa fa-chevron-left"></i> 為什麼要寫測試？
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/02/15/c-sharp-moq-usage/" rel="next" title="C# moq 使用說明">
+      C# moq 使用說明 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+  <script src="https://utteranc.es/client.js"
+          repo="cxcatir/cxcatir.github.io"
+          issue-term="pathname"
+          label="comments"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Stub"><span class="nav-number">1.</span> <span class="nav-text">Stub</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Mock"><span class="nav-number">2.</span> <span class="nav-text">Mock</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A5-C-moq-%E7%82%BA%E7%AF%84%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">以 C# moq 為範例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Stub-1"><span class="nav-number">3.1.</span> <span class="nav-text">Stub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mock-1"><span class="nav-number">3.2.</span> <span class="nav-text">Mock</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E5%90%8C%E8%A2%AB%E6%B8%AC%E8%A9%A6%E7%9A%84%E5%B0%8D%E8%B1%A1-PaymentService"><span class="nav-number">3.3.</span> <span class="nav-text">共同被測試的對象 PaymentService</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rita</p>
+  <div class="site-description" itemprop="description">走過的路會成為養分</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-star-and-crescent"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rita</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
